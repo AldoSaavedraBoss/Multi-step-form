@@ -22,6 +22,7 @@ h2 {
 p {
   font-weight: 500;
   color: var(--cool-gray);
+  margin-bottom: 0.5rem;
 }
 
 .form {

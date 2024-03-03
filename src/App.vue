@@ -12,15 +12,21 @@ const step = ref<number>(1)
 
 const handleNextStep = (e: Event) => {
   e.preventDefault()
-  if (!form.value) return
+  if (!form.value || e.target == null) return
+  const formElements = Array.from((e.target as HTMLFormElement).elements) as HTMLInputElement[]
   const fd = new FormData(form.value)
   if (step.value === 1) {
-    const personalInfo = {
-      name: fd.get('name'),
-      email: fd.get('email'),
-      phone: fd.get('phone'),
+    const isValid = validation(formElements)
+    if (isValid) {
+      const personalInfo = {
+        name: fd.get('name').trim(),
+        email: fd.get('email').trim(),
+        phone: fd.get('phone').trim(),
+      }
+      store.commit('settingPersonalInfo', personalInfo)
+    } else {
+      return
     }
-    store.commit('settingPersonalInfo', personalInfo)
   }
   if (step.value === 2) {
     const plan = fd.get('plan')
@@ -29,10 +35,25 @@ const handleNextStep = (e: Event) => {
   if (step.value === 3) {
     const addons = fd.getAll('addons')
     store.commit('settingAddons', addons)
-    // console.log('seleciona addions')
-    // return
   }
   step.value++
+}
+
+const validation = (elements: HTMLInputElement[]) => {
+  let isvalid = true
+  elements.map(ele => {
+    const value = ele.value.trim()
+    const sibling = ele.nextElementSibling
+    if (sibling == null) return
+    if (value == '') {
+      sibling.style.visibility = 'visible'
+      isvalid = false
+    } else {
+      sibling.style.visibility = 'hidden'
+    }
+  })
+
+  return isvalid
 }
 </script>
 
@@ -52,8 +73,8 @@ const handleNextStep = (e: Event) => {
 
       <div class="next_step_container">
         <span @click="step--" v-show="step > 1">Go Back</span>
-        <button type="submit" v-if="step < 4">Next Step</button>
-        <button type="submit" v-else>Confirm</button>
+        <button class="next" type="submit" v-if="step < 4" value="Next">Next Step</button>
+        <button class="confirm" type="submit" value="Enviar" v-else>Confirm</button>
       </div>
     </form>
   </main>
@@ -103,6 +124,10 @@ body {
   cursor: pointer;
 }
 
+.next_step_container span:hover {
+  color: var(--marine-blue);
+}
+
 .next_step_container button {
   color: var(--white);
   background-color: var(--marine-blue);
@@ -110,6 +135,15 @@ body {
   border: none;
   border-radius: 0.3rem;
   font-weight: 500;
+  margin-left: auto;
+}
+
+.next:hover {
+  opacity: 0.9;
+}
+
+.confirm:hover {
+  background-color: var(--pastel-blue);
 }
 
 @media (min-width: 800px) {
@@ -155,10 +189,6 @@ body {
     width: 100%;
     position: static;
     margin-top: auto;
-  }
-
-  .next_step_container button {
-    margin-left: auto;
   }
 }
 </style>

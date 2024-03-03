@@ -78,6 +78,10 @@ input:checked + .card__label {
   background-color: var(--magnolia);
 }
 
+input:hover + .card__label {
+  border-color: var(--purplish-blue);
+}
+
 input:checked {
   accent-color: var(--purplish-blue);
 }

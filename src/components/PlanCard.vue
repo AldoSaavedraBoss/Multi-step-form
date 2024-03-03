@@ -4,9 +4,10 @@ import { toRefs } from 'vue'
 const props = defineProps<{
   price: number
   id: string
+  planChecked: string
 }>()
 
-const { id, price } = toRefs(props)
+const { id, price, planChecked } = toRefs(props)
 
 const savingPlan = () => {
   const template = {
@@ -20,7 +21,7 @@ const savingPlan = () => {
 
 <template>
   <div class="card">
-    <input type="radio" name="plan" :id="id" :value="savingPlan()" />
+    <input type="radio" name="plan" :id="id" :value="savingPlan()" :checked="planChecked == id" />
     <label :for="id">
       <i class="icon">
         <slot name="icon"></slot>
@@ -53,8 +54,13 @@ const savingPlan = () => {
   border-radius: 10px;
 }
 
-.card input:checked {
+.card input:checked + label {
   border: 1px solid var(--purplish-blue);
+}
+
+.card input:checked {
+  background-color: var(--pastel-blue);
+  opacity: 0.1;
 }
 .card label {
   position: absolute;
@@ -65,6 +71,11 @@ const savingPlan = () => {
   width: 100%;
   height: 100%;
   cursor: pointer;
+  border-radius: 10px;
+}
+
+.card label:hover {
+  border: 1px solid var(--purplish-blue);
 }
 
 .price_title {

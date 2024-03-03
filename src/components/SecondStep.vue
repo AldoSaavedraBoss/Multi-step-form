@@ -13,6 +13,8 @@ const data = computed(() => {
   return periodicity.value ? store.state.infoYearly.step2 : store.state.infoMonthly.step2
 })
 const priceMsg = computed(() => store.getters.planPrice)
+
+const planChecked = 'Arcade'
 </script>
 <template>
   <StepTemplate>
@@ -20,19 +22,19 @@ const priceMsg = computed(() => store.getters.planPrice)
     <template #subtitle>You have the option of monthly or yearly billing.</template>
     <template #content>
       <div class="container">
-        <PlanCard :price="data.arcadePrice" id="Arcade">
+        <PlanCard :planChecked="planChecked" :price="data.arcadePrice" id="Arcade">
           <template #icon><ArcadeIcon /></template>
           <template #title>Arcade</template>
           <template #price>{{ priceMsg[0] }}</template>
         </PlanCard>
 
-        <PlanCard :price="data.advancedPrice" id="Advanced">
+        <PlanCard :planChecked="planChecked" :price="data.advancedPrice" id="Advanced">
           <template #icon><AdvancedIcon /></template>
           <template #title>Advanced</template>
           <template #price>{{ priceMsg[1] }}</template>
         </PlanCard>
 
-        <PlanCard :price="data.proPrice" id="Pro">
+        <PlanCard :planChecked="planChecked" :price="data.proPrice" id="Pro">
           <template #icon><ProIcon /></template>
           <template #title>Pro</template>
           <template #price>{{ priceMsg[2] }}</template>

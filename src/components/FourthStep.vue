@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import AddonCard from './AddonCard.vue'
 import store from '@/store'
 
 const mode = computed(() => store.state.periodicity ?? false)
-const plan = computed(() => JSON.parse(store.state.plan ?? ''))
+const plan = computed(() => JSON.parse(store.state.plan) ?? null)
 const addons = computed(() => store.state.addons ?? [])
-const addonsParsed = addons.value.map(addon => JSON.parse(addon))
+const addonsParsed = addons.value.map(addon => JSON.parse(addon) ?? null)
 const total = computed(
   () => addonsParsed.reduce((acc, curr) => acc + curr.price, 0) + plan.value.price
 )
@@ -40,8 +39,8 @@ const total = computed(
       </div>
     </div>
     <div class="total">
-      <span class="label">Total (per year)</span>
-      <span class="total__price">${{ total }}/yr</span>
+      <span class="label">Total (per {{ mode ? 'year' : 'month' }})</span>
+      <span class="total__price">${{ total }}/{{ mode ? 'yr' : 'mo' }}</span>
     </div>
   </div>
 </template>
@@ -70,6 +69,10 @@ const total = computed(
 .plan__change {
   display: flex;
   justify-content: space-between;
+}
+
+.plan__change a:hover {
+  color: var(--purplish-blue);
 }
 
 hr {

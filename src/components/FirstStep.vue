@@ -9,6 +9,7 @@ import StepTemplate from '@/layouts/StepTemplate.vue'
       <div class="input_group">
         <label for="name">Name</label>
         <input class="input" type="text" name="name" id="name" placeholder="e.g Stephen King" />
+        <span>This field is required</span>
       </div>
       <div class="input_group">
         <label for="email">Email Address</label>
@@ -19,6 +20,7 @@ import StepTemplate from '@/layouts/StepTemplate.vue'
           id="email"
           placeholder="e.g stephenking@lorem.com"
         />
+        <span>This field is required</span>
       </div>
       <div class="input_group">
         <label for="phone">Phone Number</label>
@@ -30,6 +32,7 @@ import StepTemplate from '@/layouts/StepTemplate.vue'
           id="phone"
           placeholder="e.g +1 234 567 890"
         />
+        <span>This field is required</span>
       </div>
     </template>
   </StepTemplate>
@@ -41,9 +44,13 @@ import StepTemplate from '@/layouts/StepTemplate.vue'
   flex-direction: column;
 }
 
-.form label {
-  font-size: 12px;
-  color: var(--marine-blue);
+.input_group span {
+  color: var(--strawberry-red);
+  font-size: 14px;
+  text-align: right;
+  font-weight: 700;
+  margin-top: 0.5rem;
+  visibility: hidden;
 }
 
 .input {
